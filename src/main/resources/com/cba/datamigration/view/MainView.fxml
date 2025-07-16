@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cba.datamigration.controller.MainController">
+   <children>
+      <Button fx:id="btnUpload" layoutX="53.0" layoutY="43.0" mnemonicParsing="false" onAction="#btnUploadOnAction" prefHeight="76.0" prefWidth="98.0" style="-fx-background-color: #075B5E;" text="Choose file" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="btnProcess" layoutX="459.0" layoutY="320.0" mnemonicParsing="false" onAction="#btnProcessOnAction" prefHeight="36.0" prefWidth="98.0" style="-fx-background-color: #075B5E;" text="Process" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="btnDelete" layoutX="344.0" layoutY="320.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="36.0" prefWidth="98.0" style="-fx-background-color: #C62828;" text="Delete File" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <TextArea fx:id="txtUpload" editable="false" layoutX="204.0" layoutY="43.0" prefHeight="201.0" prefWidth="354.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></TextArea>
+      <ComboBox fx:id="cmbDataType" layoutX="53.0" layoutY="325.0" onAction="#selectOnAction" prefHeight="26.0" prefWidth="213.0" promptText="Select Data Type" />
+   </children>
+</AnchorPane>
