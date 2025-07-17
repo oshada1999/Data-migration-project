@@ -1,7 +1,10 @@
 package com.cba.datamigration.controller;
 
+import com.cba.datamigration.dto.ChildDTO;
 import com.cba.datamigration.dto.MainClientDTO;
+import com.cba.datamigration.mapper.ChildRowMapper;
 import com.cba.datamigration.mapper.MainClientRowMapper;
+import com.cba.datamigration.model.ChildModel;
 import com.cba.datamigration.model.MainClientModel;
 import com.cba.datamigration.util.FileDataReader;
 import javafx.scene.control.Alert;
@@ -11,23 +14,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class MainClientController {
-
+public class ChildController {
     private FileDataReader fileDataReader; // Inject or instantiate
 
-    public MainClientController() {
+    public ChildController() {
         this.fileDataReader = new FileDataReader(); // Or use dependency injection
     }
 
     public void processData(File file, Consumer<Boolean> onCompletion) {
         System.out.println("Processing file : " + file.getName());
-        List<MainClientDTO> customers = new ArrayList<>();
+        List<ChildDTO> customers = new ArrayList<>();
         boolean success = false;
         try {
             if (file.getName().endsWith(".csv")) {
-                customers = fileDataReader.readCsv(file, new MainClientRowMapper());
+                customers = fileDataReader.readCsv(file, new ChildRowMapper());
             } else {
-                customers = fileDataReader.readExcel(file, new MainClientRowMapper());
+                customers = fileDataReader.readExcel(file, new ChildRowMapper());
             }
 
             if (customers.isEmpty()) {
@@ -36,7 +38,7 @@ public class MainClientController {
                 return;
             }
 
-            MainClientModel mainClientModel = new MainClientModel();
+            ChildModel childModel = new ChildModel();
 
             int batchSize = 1000;
             int total = customers.size();
@@ -44,9 +46,9 @@ public class MainClientController {
 
             for (int i = 0; i < total; i += batchSize) {
                 int end = Math.min(i + batchSize, total);
-                List<MainClientDTO> batch = customers.subList(i, end);
+                List<ChildDTO> batch = customers.subList(i, end);
 
-                mainClientModel.saveMainClientDataToTable(batch);
+                childModel.saveChildDataToTable(batch);
                 totalInserted += batch.size();
 
                 System.out.println("Inserted batch " + ((i / batchSize) + 1) +

@@ -2,7 +2,7 @@ package com.cba.datamigration.dto;
 
 import java.time.LocalDateTime;
 
-public class CustomerDTO {
+public class MainClientDTO {
     private String clnCode;
     private String clnName;
     private String clnSegment;
@@ -14,9 +14,9 @@ public class CustomerDTO {
     private String clnPriority;
 
     // Constructor
-    public CustomerDTO(String clnCode, String clnName, String clnSegment, String clnSector,
-                       String clnIndustry, String notSure, String addedBy,
-                       LocalDateTime addedOn, String clnPriority) {
+    public MainClientDTO(String clnCode, String clnName, String clnSegment, String clnSector,
+                         String clnIndustry, String notSure, String addedBy,
+                         LocalDateTime addedOn, String clnPriority) {
         this.clnCode = clnCode;
         this.clnName = clnName;
         this.clnSegment = clnSegment;
@@ -29,7 +29,7 @@ public class CustomerDTO {
     }
 
     // Default constructor (optional)
-    public CustomerDTO() {}
+    public MainClientDTO() {}
 
     // Getters and Setters
     public String getClnCode() {

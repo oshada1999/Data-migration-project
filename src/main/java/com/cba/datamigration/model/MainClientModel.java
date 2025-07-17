@@ -1,7 +1,7 @@
 package com.cba.datamigration.model;
 
 
-import com.cba.datamigration.dto.CustomerDTO;
+import com.cba.datamigration.dto.MainClientDTO;
 import com.cba.datamigration.util.DBConnection;
 
 import java.sql.Connection;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MainClientModel {
 
-    public void saveMainClientDataToTable(List<CustomerDTO> customers) throws SQLException {
+    public void saveMainClientDataToTable(List<MainClientDTO> customers) throws SQLException {
         Connection conn = DBConnection.getInstance().getConnection();
         conn.setAutoCommit(false);
 
@@ -22,7 +22,7 @@ public class MainClientModel {
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(insertSql)) {
-            for (CustomerDTO c : customers) {
+            for (MainClientDTO c : customers) {
                 ps.setString(1, c.getClnName());
                 ps.setBoolean(2, false);
                 ps.setBoolean(3, false);
@@ -32,10 +32,10 @@ public class MainClientModel {
                 LocalDateTime now = LocalDateTime.now();
                 ps.setTimestamp(5, Timestamp.valueOf(now)); // inserted_at
                 ps.setTimestamp(6, Timestamp.valueOf(now)); // created_at
-                ps.setString(7, "system");                  // created_by
+                ps.setString(7, "Migration system");                  // created_by
                 ps.setTimestamp(8, Timestamp.valueOf(now)); // saved_at
                 ps.setTimestamp(9, Timestamp.valueOf(now)); // updated_at
-                ps.setString(10, "system");                 // updated_by
+                ps.setString(10, "Migration system");                 // updated_by
                 ps.setBoolean(11, false);                   // is_deleted
                 ps.setBoolean(12, true);                    // is_active
                 ps.setString(13, c.getClnCode());   //clnCode

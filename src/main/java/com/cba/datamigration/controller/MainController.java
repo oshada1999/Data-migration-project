@@ -34,6 +34,7 @@ public class MainController {
 
     MachineController machineController = new MachineController();
     MainClientController mainClientController = new MainClientController(); // Assuming this exists
+    ChildController childController = new ChildController();
 
     public void initialize() {
         btnProcess.setDisable(true);
@@ -94,8 +95,9 @@ public class MainController {
                     case 1:
                         mainClientController.processData(selectedFile, onCompletion); // Call customer controller
                         break;
-                        case 2:
-
+                    case 2:
+                        childController.processData(selectedFile, onCompletion);
+                        break;
                     default:
                         showAlert(Alert.AlertType.WARNING, "Invalid Data Type", "Selected data type is not supported.", null);
                         onCompletion.accept(false);

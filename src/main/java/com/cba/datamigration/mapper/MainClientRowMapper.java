@@ -1,15 +1,15 @@
 package com.cba.datamigration.mapper;
 
-import com.cba.datamigration.dto.CustomerDTO;
+import com.cba.datamigration.dto.MainClientDTO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class MainClientRowMapper implements RowMapper<CustomerDTO> {
+public class MainClientRowMapper implements RowMapper<MainClientDTO> {
 
     @Override
-    public CustomerDTO mapRow(String[] row) {
-        return new CustomerDTO(
+    public MainClientDTO mapRow(String[] row) {
+        return new MainClientDTO(
                 row[0], // ClnCode
                 row[1], // ClnName
                 row[2], // ClnSegment
