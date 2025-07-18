@@ -42,7 +42,7 @@ public class MainController {
         cmbDataType.setDisable(true);
 
         ObservableList<String> dataTypes = FXCollections.observableArrayList(
-                "Machine(category,brand,model)", "Parent Customer", "Child Customer"
+                "01. Machine(category,brand,model)", "02. Parent Customer", "03. Child Customer"
         );
         cmbDataType.setItems(dataTypes);
     }
