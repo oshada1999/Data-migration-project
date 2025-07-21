@@ -83,7 +83,9 @@ public class MachineModel {
         conn.setAutoCommit(false);
 
         try {
+            int total = machines.size();
             for (MachineDTO c : machines) {
+                System.out.println( "Total ithuru" + total--);
                 Integer categoryId = getOrInsertAndGetId(conn, "product_category", "name", c.getMcnName(), null, null, null);
                 Integer brandId = getOrInsertAndGetId(conn, "product_brand", "name", c.getMake(), "product_category_id", categoryId, null);
                 getOrInsertAndGetId(conn, "product_model", "name", c.getModel(), "product_brand_id", brandId, c.getMcnCode());

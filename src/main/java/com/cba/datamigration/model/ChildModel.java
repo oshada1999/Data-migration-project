@@ -21,6 +21,12 @@ public class ChildModel {
             "is_deleted, is_active, cusCode, latitude, longitude) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+    private static final String PHONE_INSERT_SQL = "INSERT INTO `customer_phone number` (" +
+            "customer_id, phone, inserted_at, created_at, created_by, " +
+            "saved_at, updated_at, updated_by, is_deleted, is_active) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+
     public void saveChildDataToTable(List<ChildDTO> batch) throws SQLException {
         Connection conn = null;
         try {
@@ -31,11 +37,11 @@ public class ChildModel {
             Map<String, Integer> parentMap = getParentIds(conn, batch);
 
             try (PreparedStatement insertStmt = conn.prepareStatement(INSERT_SQL)) {
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
                 LocalDateTime now = LocalDateTime.now();
 
                 for (ChildDTO child : batch) {
                     Integer parentId = parentMap.get(child.getClnCode());
+
 
                     if (parentId != null) {
                         int paramIndex = 1;
@@ -60,10 +66,12 @@ public class ChildModel {
                         insertStmt.setBoolean(paramIndex++, false); // is_deleted
                         insertStmt.setBoolean(paramIndex++, true);  // is_active
                         insertStmt.setString(paramIndex++, child.getCusCode());
-                        insertStmt.setDouble(paramIndex++, 0); // latitude
-                        insertStmt.setDouble(paramIndex++, 0); // longitude
+                        insertStmt.setDouble(paramIndex++, 0.0); // latitude
+                        insertStmt.setDouble(paramIndex++, 0.0); // longitude
 
                         insertStmt.addBatch(); // Batch insert
+                    }else {
+                        System.out.println(child.getClnCode());
                     }
                 }
 

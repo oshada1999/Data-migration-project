@@ -1,6 +1,5 @@
 package com.cba.datamigration.model;
 
-
 import com.cba.datamigration.dto.MainClientDTO;
 import com.cba.datamigration.util.DBConnection;
 
@@ -15,38 +14,42 @@ public class MainClientModel {
 
     public void saveMainClientDataToTable(List<MainClientDTO> customers) throws SQLException {
         Connection conn = DBConnection.getInstance().getConnection();
-        conn.setAutoCommit(false);
+        conn.setAutoCommit(false); // transactional control
 
         String insertSql = "INSERT INTO parent_customer " +
                 "(name, is_vat, is_sscl, business_type, inserted_at, created_at, created_by, saved_at, updated_at, updated_by, is_deleted, is_active, clnCode) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(insertSql)) {
+
             for (MainClientDTO c : customers) {
+                LocalDateTime now = LocalDateTime.now();
+                Timestamp timestamp = Timestamp.valueOf(now);
+
                 ps.setString(1, c.getClnName());
                 ps.setBoolean(2, false);
                 ps.setBoolean(3, false);
                 ps.setString(4, "Migration System Added");
+                ps.setTimestamp(5, timestamp);
+                ps.setTimestamp(6, timestamp);
+                ps.setString(7, "Migration system");
+                ps.setTimestamp(8, timestamp);
+                ps.setTimestamp(9, timestamp);
+                ps.setString(10, "Migration system");
+                ps.setBoolean(11, false);
+                ps.setBoolean(12, true);
+                ps.setString(13, c.getClnCode());
 
-                // Audit fields (you can customize how these are generated)
-                LocalDateTime now = LocalDateTime.now();
-                ps.setTimestamp(5, Timestamp.valueOf(now)); // inserted_at
-                ps.setTimestamp(6, Timestamp.valueOf(now)); // created_at
-                ps.setString(7, "Migration system");                  // created_by
-                ps.setTimestamp(8, Timestamp.valueOf(now)); // saved_at
-                ps.setTimestamp(9, Timestamp.valueOf(now)); // updated_at
-                ps.setString(10, "Migration system");                 // updated_by
-                ps.setBoolean(11, false);                   // is_deleted
-                ps.setBoolean(12, true);                    // is_active
-                ps.setString(13, c.getClnCode());   //clnCode
+                ps.addBatch();
 
-                ps.executeUpdate();
             }
-
+            ps.executeBatch();
             conn.commit();
+
         } catch (Exception e) {
             conn.rollback();
-            throw new RuntimeException("Error saving customer data to main_client table", e);
+            System.err.println("Insert failed: " + e.getMessage());
+            throw new RuntimeException("Error saving customer data to parent_customer table", e);
         }
     }
 }

@@ -93,7 +93,7 @@ public class MainController {
                         machineController.processData(selectedFile, onCompletion);
                         break;
                     case 1:
-                        mainClientController.processData(selectedFile, onCompletion); // Call customer controller
+                        mainClientController.processData(selectedFile, onCompletion);
                         break;
                     case 2:
                         childController.processData(selectedFile, onCompletion);

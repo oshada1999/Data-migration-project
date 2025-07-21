@@ -12,7 +12,7 @@ public class DBConnection {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/trackable", "root", "1234");
+            connection = DriverManager.getConnection("jdbc:mysql://148.251.225.125:3306/trackable?rewriteBatchedStatements=true", "trckuser", "Tr(k4U$#r");
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException("Failed to save the Delete");
         }
