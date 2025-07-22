@@ -1,11 +1,8 @@
 package com.cba.datamigration.controller;
 
 import com.cba.datamigration.dto.ChildDTO;
-import com.cba.datamigration.dto.MainClientDTO;
 import com.cba.datamigration.mapper.ChildRowMapper;
-import com.cba.datamigration.mapper.MainClientRowMapper;
 import com.cba.datamigration.model.ChildModel;
-import com.cba.datamigration.model.MainClientModel;
 import com.cba.datamigration.util.FileDataReader;
 import javafx.scene.control.Alert;
 
@@ -14,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ChildController {
+public class ChilCustomerPhone {
     private FileDataReader fileDataReader; // Inject or instantiate
 
-    public ChildController() {
+    public ChilCustomerPhone() {
         this.fileDataReader = new FileDataReader(); // Or use dependency injection
     }
 
@@ -44,16 +41,7 @@ public class ChildController {
             int total = customers.size();
             int totalInserted = 0;
 
-            for (int i = 0; i < total; i += batchSize) {
-                int end = Math.min(i + batchSize, total);
-                List<ChildDTO> batch = customers.subList(i, end);
 
-                childModel.saveChildDataToTable(batch);
-                totalInserted += batch.size();
-
-                System.out.println("Inserted batch " + ((i / batchSize) + 1) +
-                        ": " + batch.size() + " rows, Total inserted so far: " + totalInserted);
-            }
 
             for (int i = 0; i < total; i += batchSize) {
                 int end = Math.min(i + batchSize, total);

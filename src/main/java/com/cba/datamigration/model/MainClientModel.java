@@ -29,7 +29,7 @@ public class MainClientModel {
                 ps.setString(1, c.getClnName());
                 ps.setBoolean(2, false);
                 ps.setBoolean(3, false);
-                ps.setString(4, "Migration System Added");
+                ps.setString(4, "INDIVIDUAL");
                 ps.setTimestamp(5, timestamp);
                 ps.setTimestamp(6, timestamp);
                 ps.setString(7, "Migration system");
