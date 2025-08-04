@@ -36,6 +36,7 @@ public class MainController {
     MainClientController mainClientController = new MainClientController(); // Assuming this exists
     ChildController childController = new ChildController();
     ChilCustomerPhone chilCustomerPhone = new ChilCustomerPhone();
+    ProductController productController = new ProductController();
 
     public void initialize() {
         btnProcess.setDisable(true);
@@ -43,7 +44,7 @@ public class MainController {
         cmbDataType.setDisable(true);
 
         ObservableList<String> dataTypes = FXCollections.observableArrayList(
-                "01. Machine(category,brand,model)", "02. Parent Customer", "03. Child Customer"
+                "01. Machine(category,brand,model)", "02. Parent Customer", "03. Child Customer", "04. Product"
         );
         cmbDataType.setItems(dataTypes);
     }
@@ -99,7 +100,9 @@ public class MainController {
                     case 2:
                         childController.processData(selectedFile, onCompletion);
                         break;
-
+                    case 3:
+                        productController.processData(selectedFile, onCompletion);
+                        break;
 
                     default:
                         showAlert(Alert.AlertType.WARNING, "Invalid Data Type", "Selected data type is not supported.", null);
