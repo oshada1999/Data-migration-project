@@ -39,3 +39,4 @@ build/
 
 ### Database Configuration ###
 src/main/java/com/cba/datamigration/util/DBConnection.java
+src/main/resources/database.properties

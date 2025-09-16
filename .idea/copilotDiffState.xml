@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/src/main/java/com/cba/datamigration/util/DBConnection.java.example">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/main/java/com/cba/datamigration/util/DBConnection.java.example" />
+              <option name="updatedContent" value="package com.cba.datamigration.util;&#10;&#10;import java.sql.Connection;&#10;import java.sql.DriverManager;&#10;import java.sql.SQLException;&#10;&#10;public class DBConnection {&#10;    private static DBConnection dbConnection;&#10;    private Connection connection;&#10;&#10;    private DBConnection() {&#10;        try {&#10;            Class.forName(&quot;com.mysql.cj.jdbc.Driver&quot;);&#10;            connection = DriverManager.getConnection(&#10;                    &quot;jdbc:mysql://localhost:3306/your_database_name&quot;,&#10;                    &quot;your_username&quot;,&#10;                    &quot;your_password&quot;&#10;            );&#10;        } catch (ClassNotFoundException | SQLException e) {&#10;            e.printStackTrace();&#10;        }&#10;    }&#10;&#10;    public static DBConnection getInstance() {&#10;        if (dbConnection == null) {&#10;            dbConnection = new DBConnection();&#10;        }&#10;        return dbConnection;&#10;    }&#10;&#10;    public Connection getConnection() {&#10;        return connection;&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
