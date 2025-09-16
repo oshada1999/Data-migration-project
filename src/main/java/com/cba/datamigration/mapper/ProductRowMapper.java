@@ -8,7 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class ProductRowMapper implements RowMapper<ProductDTO> {
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
+
 
     @Override
     public ProductDTO mapRow(String[] row) {
@@ -74,15 +75,14 @@ public class ProductRowMapper implements RowMapper<ProductDTO> {
     }
 
 
-
     private Double parseDouble(String[] row, int index) {
-    String value = getValue(row, index);
-    if (value == null || value.isEmpty()) return null;
-    try {
-        return Double.parseDouble(value);
-    } catch (NumberFormatException e) {
-        System.err.println("Invalid number format: " + value);
-        return null;
+        String value = getValue(row, index);
+        if (value == null || value.isEmpty()) return null;
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid number format: " + value);
+            return null;
+        }
     }
-}
 }

@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class ProductController {
-    private FileDataReader fileDataReader; // Inject or instantiate
+    private FileDataReader fileDataReader;
 
     public ProductController() {
-        this.fileDataReader = new FileDataReader(); // Or use dependency injection
+        this.fileDataReader = new FileDataReader();
     }
 
     public void processData(File file, Consumer<Boolean> onCompletion) {
@@ -34,28 +34,19 @@ public class ProductController {
 
             if (products.isEmpty()) {
                 showAlert(Alert.AlertType.WARNING, "No Valid Data", "No data found in the file.", null);
-                onCompletion.accept(true); // Indicate completion even if no data
+                onCompletion.accept(true);
                 return;
             }
 
             ProductModel productModel = new ProductModel();
-            productModel.saveProduct(products);
-
-//            int batchSize = 1000;
-//            int total = products.size();
-//            int totalInserted = 0;
-//
-//            for (int i = 0; i < total; i += batchSize) {
-//                int end = Math.min(i + batchSize, total);
-//                List<ProductDTO> batch = products.subList(i, end);
-//
-//                productModel.saveProduct(batch);
-//                totalInserted += batch.size();
-//
-//                System.out.println("Inserted batch " + ((i / batchSize) + 1) +
-//                        ": " + batch.size() + " rows, Total inserted so far: " + totalInserted);
-//            }
-
+            //save product
+            //productModel.saveProduct(products);
+            //save warranty template
+            //productModel.saveWarrantyTemplate(products);
+            // save warranty agreement
+            productModel.saveWarrantyAgreement(products);
+            // save warranty agreement product
+            productModel.saveWarrantyProduct(products);
 
             showAlert(Alert.AlertType.INFORMATION, "Success", "Machine records inserted in batches.", null);
             success = true;
@@ -64,7 +55,7 @@ public class ProductController {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Error", "Error processing file: " + e.getMessage(), null);
         } finally {
-            onCompletion.accept(success); // Notify MainController about completion status
+            onCompletion.accept(success);
         }
     }
 

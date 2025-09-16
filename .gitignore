@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Database Configuration ###
+src/main/java/com/cba/datamigration/util/DBConnection.java

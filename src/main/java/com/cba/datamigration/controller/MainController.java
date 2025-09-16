@@ -37,6 +37,7 @@ public class MainController {
     ChildController childController = new ChildController();
     ChilCustomerPhone chilCustomerPhone = new ChilCustomerPhone();
     ProductController productController = new ProductController();
+    ServiceAgreementController serviceAgreementController = new ServiceAgreementController();
 
     public void initialize() {
         btnProcess.setDisable(true);
@@ -44,7 +45,7 @@ public class MainController {
         cmbDataType.setDisable(true);
 
         ObservableList<String> dataTypes = FXCollections.observableArrayList(
-                "01. Machine(category,brand,model)", "02. Parent Customer", "03. Child Customer", "04. Product"
+                "01. Machine(category,brand,model)", "02. Parent Customer", "03. Child Customer", "04. Product", "05. Service Agreement"
         );
         cmbDataType.setItems(dataTypes);
     }
@@ -102,6 +103,9 @@ public class MainController {
                         break;
                     case 3:
                         productController.processData(selectedFile, onCompletion);
+                        break;
+                    case 4:
+                        serviceAgreementController.processData(selectedFile, onCompletion);
                         break;
 
                     default:
