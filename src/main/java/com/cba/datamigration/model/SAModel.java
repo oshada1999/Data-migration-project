@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class SAModel {
+    private final Map<String, String> saTypeMap = new HashMap<>();
+
     public void saveWarrantyTemplate(List<ServiceAgreementDTO> serviceAgreementDTOS) throws SQLException {
         if (serviceAgreementDTOS == null || serviceAgreementDTOS.isEmpty()) {
             System.out.println("No service agreements to process");
@@ -30,11 +32,18 @@ public class SAModel {
             for (ServiceAgreementDTO sa : serviceAgreementDTOS) {
                 int period = 0;
 
-                if (sa.getPeriod() != null && !sa.getPeriod().trim().isEmpty()) {
+                if (!sa.getPeriod().equalsIgnoreCase("null") && !sa.getPeriod().trim().isEmpty()) {
                     try {
                         period = (int) Double.parseDouble(sa.getPeriod().trim());
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid period: " + sa.getPeriod());
+                        continue;
+                    }
+                } else if (!sa.getWarrantyPeriod().equalsIgnoreCase("null") && !sa.getWarrantyPeriod().trim().isEmpty()) {
+                    try {
+                        period = (int) Double.parseDouble(sa.getWarrantyPeriod().trim());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid warranty period: " + sa.getWarrantyPeriod());
                         continue;
                     }
                 }
@@ -58,9 +67,14 @@ public class SAModel {
                 // Normalize warranty periods
                 period = normalizeWarrantyPeriod(period);
 
-                // Create unique key for this combination
-                String key = period + "-" + services;
+                // Map SA to LABOUR_ONLY and WA to WARRANTY
+                String mappedSaType = sa.getSaType().equals("SA") ? "LABOUR_ONLY" :
+                        sa.getSaType().equals("WA") ? "WARRANTY" : sa.getSaType();
+
+                // Create unique key for this combination using mapped type
+                String key = period + "-" + services + "-" + mappedSaType;
                 uniqueCombinations.putIfAbsent(key, Map.entry(period, services));
+                saTypeMap.put(key, mappedSaType);
             }
 
             // Check existing combinations in database
@@ -76,18 +90,19 @@ public class SAModel {
                 int count = 0;
                 for (Map.Entry<String, Map.Entry<Integer, Integer>> entry : uniqueCombinations.entrySet()) {
                     if (existingCombinations.contains(entry.getKey())) {
-                        System.out.println("Skipping existing combination: " + entry.getKey());
+                        //System.out.println("Skipping existing combination: " + entry.getKey());
                         continue;
                     }
 
                     int period = entry.getValue().getKey();
                     int services = entry.getValue().getValue();
+                    String saType = saTypeMap.get(entry.getKey());
 
                     ps.setInt(1, period);
                     ps.setInt(2, services);
                     ps.setLong(3, 1);  // sr_category_id
-                    ps.setString(4, "LABOUR_ONLY");
-                    ps.setString(5, String.format("LABOUR_ONLY (%d months) - %d service", period, services));
+                    ps.setString(4, saType);  // Use mapped type (LABOUR_ONLY or WARRANTY)
+                    ps.setString(5, String.format("%s (%d months) - %d service", saType, period, services));
                     ps.setBoolean(6, true);  // is_default
 
                     Timestamp now = Timestamp.valueOf(LocalDateTime.now());
@@ -114,7 +129,7 @@ public class SAModel {
             }
 
             conn.commit();
-            System.out.println("Successfully processed " + uniqueCombinations.size() + " service agreement templates");
+            //System.out.println("Successfully processed " + uniqueCombinations.size() + " service agreement templates");
 
         } catch (SQLException e) {
             if (conn != null) {
@@ -124,7 +139,7 @@ public class SAModel {
                     System.err.println("Error during rollback: " + ex.getMessage());
                 }
             }
-            System.err.println("Failed to save service agreement templates: " + e.getMessage());
+            //System.err.println("Failed to save service agreement templates: " + e.getMessage());
             throw new SQLException("Error saving service agreement data", e);
         } finally {
             if (conn != null) {
@@ -150,12 +165,14 @@ public class SAModel {
 
     private Set<String> getExistingCombinations(Connection conn) throws SQLException {
         Set<String> existingCombinations = new HashSet<>();
-        String checkExistingSql = "SELECT duration_months, service_count FROM service_agreement_template";
+        String checkExistingSql = "SELECT duration_months, service_count, service_agreement_type FROM service_agreement_template";
 
         try (PreparedStatement ps = conn.prepareStatement(checkExistingSql)) {
             var rs = ps.executeQuery();
             while (rs.next()) {
-                String combination = rs.getInt("duration_months") + "-" + rs.getInt("service_count");
+                String combination = rs.getInt("duration_months") + "-" +
+                        rs.getInt("service_count") + "-" +
+                        rs.getString("service_agreement_type");
                 existingCombinations.add(combination);
             }
         }

@@ -29,6 +29,7 @@ public class ServiceAgreementDTO {
     private String saType;
     private String saleCode;
     private String saCategory;
+    private String warrantyPeriod;
 
     // Default constructor
     public ServiceAgreementDTO() {
@@ -40,7 +41,7 @@ public class ServiceAgreementDTO {
                                Double total, String saEndDate, String serviceCount, String saId,
                                String saCategoryRemark, String followUpCategory, String phone, String contactPer,
                                String saStartDate, String clnCode, String deliveryMethod, String status,
-                               String saStatus, String saType, String saleCode, String saCategory) {
+                               String saStatus, String saType, String saleCode, String saCategory, String warrantyPeriod) {
         this.saCode = saCode;
         this.period = period;
         this.cumAmount = cumAmount;
@@ -65,6 +66,7 @@ public class ServiceAgreementDTO {
         this.saType = saType;
         this.saleCode = saleCode;
         this.saCategory = saCategory;
+        this.warrantyPeriod = warrantyPeriod;
     }
 
     // Getters and Setters
@@ -259,6 +261,9 @@ public class ServiceAgreementDTO {
     public void setSaCategory(String saCategory) {
         this.saCategory = saCategory;
     }
+
+    public String getWarrantyPeriod() {return warrantyPeriod;}
+    public void setWarrantyPeriod(String warrantyPeriod) {this.warrantyPeriod = warrantyPeriod;}
 
     @Override
     public String toString() {

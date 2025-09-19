@@ -34,23 +34,73 @@ public class FileDataReader {
 
     public <T> List<T> readExcel(File file, RowMapper<T> mapper) throws IOException {
         List<T> data = new ArrayList<>();
+
         try (InputStream is = new FileInputStream(file)) {
             Workbook workbook = file.getName().endsWith(".xlsx") ? new XSSFWorkbook(is) : new HSSFWorkbook(is);
             Sheet sheet = workbook.getSheetAt(0);
+
+            FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+
             boolean isFirstRow = true;
             for (Row row : sheet) {
                 if (isFirstRow) {
-                    isFirstRow = false;
+                    isFirstRow = false; // skip header
                     continue;
                 }
+
                 String[] tokens = new String[row.getLastCellNum()];
+
                 for (int i = 0; i < row.getLastCellNum(); i++) {
                     Cell cell = row.getCell(i);
-                    tokens[i] = cell == null ? "" : cell.toString();
+
+                    if (cell == null) {
+                        tokens[i] = "";
+                        continue;
+                    }
+
+                    switch (cell.getCellType()) {
+                        case STRING:
+                            tokens[i] = cell.getStringCellValue();
+                            break;
+                        case NUMERIC:
+                            tokens[i] = String.valueOf(cell.getNumericCellValue());
+                            break;
+                        case BOOLEAN:
+                            tokens[i] = String.valueOf(cell.getBooleanCellValue());
+                            break;
+                        case FORMULA:
+                            switch (cell.getCachedFormulaResultType()) {
+                                case STRING:
+                                    tokens[i] = cell.getStringCellValue();
+                                    break;
+                                case NUMERIC:
+                                    tokens[i] = String.valueOf(cell.getNumericCellValue());
+                                    break;
+                                case BOOLEAN:
+                                    tokens[i] = String.valueOf(cell.getBooleanCellValue());
+                                    break;
+                                case ERROR:
+                                    tokens[i] = "ERROR"; // or "" or your default
+                                    break;
+                                default:
+                                    tokens[i] = "";
+                            }
+                            break;
+                        case ERROR:
+                            tokens[i] = "ERROR"; // or "" or your default
+                            break;
+                        default:
+                            tokens[i] = "";
+                            break;
+                    }
                 }
+
+
                 data.add(mapper.mapRow(tokens));
             }
         }
+
         return data;
     }
+
 }

@@ -21,7 +21,7 @@ public class ServiceAgreementRowMapper implements RowMapper<ServiceAgreementDTO>
 
         return new ServiceAgreementDTO(
                 row.length > 0 ? row[0] : null,   // SACode
-                row.length > 1 ? row[1] : null,   // Period
+                row.length > 1 ? row[1] : null,   // SA_Period
                 parseDouble(row, 2),          // CumAmount
                 parseDouble(row, 3),          // Discount
                 row.length > 4 ? row[4] : null,   // VatType
@@ -43,7 +43,8 @@ public class ServiceAgreementRowMapper implements RowMapper<ServiceAgreementDTO>
                 row.length > 20 ? row[20] : null, // SA_status
                 row.length > 21 ? row[21] : null, // SA_Type
                 row.length > 22 ? row[22] : null, // SaleCode
-                row.length > 23 ? row[23] : null  // SA_Category
+                row.length > 23 ? row[23] : null,  // SA_Category
+                row.length > 24 ? row[24] : null  // warranty_period
         );
     }
 
